@@ -1,13 +1,25 @@
+/* Style for the entire document body */
 body {
+  /* Removes default margin applied by the browser to create a full-width layout */
   margin: 0;
+
+  /* Specifies the font stack for the entire application */
+  /* Uses a system font stack for optimal performance and consistent appearance across platforms */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+
+  /* Enhances the rendering of text on macOS and iOS devices */
   -webkit-font-smoothing: antialiased;
+
+  /* Improves font rendering on macOS devices */
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Style for code elements */
 code {
+  /* Specifies a font stack tailored for displaying code */
+  /* Includes monospaced fonts for better readability of code snippets */
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }

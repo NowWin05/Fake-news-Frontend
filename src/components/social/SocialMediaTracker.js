@@ -4,6 +4,7 @@ import { Twitter, Facebook, Reddit, LinkedIn } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
 const PlatformMetrics = ({ platform, metrics }) => {
+  // Mapping of platform names to corresponding icons
   const icons = {
     twitter: Twitter,
     facebook: Facebook,
@@ -11,7 +12,8 @@ const PlatformMetrics = ({ platform, metrics }) => {
     linkedin: LinkedIn,
   };
 
-  const Icon = icons[platform.toLowerCase()] || Twitter;
+  // Get the appropriate icon for the platform
+  const Icon = icons[platform.toLowerCase()] || Twitter; // Default to Twitter if the platform is not found
 
   return (
     <Box
@@ -24,13 +26,14 @@ const PlatformMetrics = ({ platform, metrics }) => {
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <Icon sx={{ color: '#FFD700', mr: 1 }} />
+        <Icon sx={{ color: '#FFD700', mr: 1 }} /> {/* Display the platform icon */}
         <Typography variant="h6" sx={{ color: '#FFD700' }}>
           {platform}
         </Typography>
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 2 }}>
+        {/* Display various metrics (Shares, Engagement, Sentiment) */}
         <Box>
           <Typography variant="body2" color="text.secondary">
             Shares
@@ -64,6 +67,7 @@ const PlatformMetrics = ({ platform, metrics }) => {
           Top Hashtags
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          {/* Display top hashtags */}
           {metrics.hashtags.map((tag, index) => (
             <Box
               key={index}
@@ -99,6 +103,7 @@ const SocialMediaTracker = ({ socialData }) => {
             Social Media Impact
           </Typography>
 
+          {/* Loop through each platform and display metrics */}
           {Object.entries(socialData).map(([platform, metrics]) => (
             <PlatformMetrics
               key={platform}
@@ -112,6 +117,7 @@ const SocialMediaTracker = ({ socialData }) => {
               Share Analysis
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+              {/* Share buttons with tooltips for each social platform */}
               <Tooltip title="Share on Twitter">
                 <IconButton sx={{ color: '#FFD700' }}>
                   <Twitter />

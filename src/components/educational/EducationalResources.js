@@ -87,6 +87,7 @@ const EducationalResources = ({ resources }) => {
             </Typography>
           </Box>
 
+          {/* Quick Tips Section */}
           <Box sx={{ mb: 4 }}>
             <Typography variant="h6" gutterBottom sx={{ color: '#FFD700' }}>
               Quick Tips for Spotting Fake News
@@ -110,6 +111,7 @@ const EducationalResources = ({ resources }) => {
             </List>
           </Box>
 
+          {/* Detailed Guides Section */}
           <Box sx={{ mb: 4 }}>
             <Typography variant="h6" gutterBottom sx={{ color: '#FFD700' }}>
               Detailed Guides
@@ -123,6 +125,7 @@ const EducationalResources = ({ resources }) => {
             ))}
           </Box>
 
+          {/* Recommended Resources Section */}
           <Box sx={{ mb: 4 }}>
             <Typography variant="h6" gutterBottom sx={{ color: '#FFD700' }}>
               Recommended Resources

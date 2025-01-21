@@ -7,17 +7,18 @@ const BiasCompass = ({ bias = 0 }) => {
   const angle = (bias / 100) * 180;
 
   return (
-    <Card sx={{ mt: 3 }}>
+    <Card sx={{ mt: 3 }}> {/* Card container for Bias Compass component */}
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          Political Bias Compass
+          Political Bias Compass {/* Title of the card */}
         </Typography>
+
         <Box
           sx={{
-            position: 'relative',
-            width: '300px',
-            height: '300px',
-            margin: '0 auto',
+            position: 'relative', 
+            width: '300px', 
+            height: '300px', 
+            margin: '0 auto', 
           }}
         >
           {/* Compass background */}
@@ -31,7 +32,7 @@ const BiasCompass = ({ bias = 0 }) => {
               border: '2px solid rgba(255, 215, 0, 0.3)',
             }}
           />
-          
+
           {/* Compass labels */}
           <Typography
             sx={{
@@ -42,7 +43,7 @@ const BiasCompass = ({ bias = 0 }) => {
               color: '#FFD700',
             }}
           >
-            Left
+            Left {/* Label for the left side of the compass */}
           </Typography>
           <Typography
             sx={{
@@ -53,14 +54,14 @@ const BiasCompass = ({ bias = 0 }) => {
               color: '#FFD700',
             }}
           >
-            Right
+            Right {/* Label for the right side of the compass */}
           </Typography>
 
           {/* Compass needle */}
           <motion.div
-            initial={{ rotate: 0 }}
-            animate={{ rotate: angle }}
-            transition={{ type: 'spring', stiffness: 50 }}
+            initial={{ rotate: 0 }} // Starting rotation angle
+            animate={{ rotate: angle }} // Animating to the angle based on bias
+            transition={{ type: 'spring', stiffness: 50 }} // Spring-like animation effect
             style={{
               position: 'absolute',
               width: '8px',
@@ -68,13 +69,13 @@ const BiasCompass = ({ bias = 0 }) => {
               background: 'linear-gradient(180deg, #FFD700 0%, #C0A960 100%)',
               left: '50%',
               top: '50%',
-              transformOrigin: 'bottom center',
+              transformOrigin: 'bottom center', // Rotation center at the bottom
               borderRadius: '4px',
               boxShadow: '0 0 10px rgba(255, 215, 0, 0.5)',
             }}
           />
 
-          {/* Center point */}
+          {/* Center point of the compass */}
           <Box
             sx={{
               position: 'absolute',
@@ -89,6 +90,8 @@ const BiasCompass = ({ bias = 0 }) => {
             }}
           />
         </Box>
+
+        {/* Display bias score */}
         <Typography
           variant="body1"
           align="center"

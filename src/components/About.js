@@ -7,52 +7,55 @@ import LanguageIcon from '@mui/icons-material/Language';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 
 const About = () => {
-  const theme = useTheme();
+  const theme = useTheme(); // Access the current theme for styling
 
+  // Array of features to display in the grid
   const features = [
     {
-      icon: <SecurityIcon sx={{ fontSize: 40 }} />,
+      icon: <SecurityIcon sx={{ fontSize: 40 }} />, // Security feature icon
       title: 'Advanced Security',
       description: 'State-of-the-art algorithms to detect sophisticated fake news patterns.',
       image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b'
     },
     {
-      icon: <PsychologyIcon sx={{ fontSize: 40 }} />,
+      icon: <PsychologyIcon sx={{ fontSize: 40 }} />, // AI-powered analysis feature icon
       title: 'AI-Powered Analysis',
       description: 'Cutting-edge machine learning models for accurate content verification.',
       image: 'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1'
     },
     {
-      icon: <LanguageIcon sx={{ fontSize: 40 }} />,
+      icon: <LanguageIcon sx={{ fontSize: 40 }} />, // Global coverage feature icon
       title: 'Global Coverage',
       description: 'Analyze news from multiple sources and languages worldwide.',
       image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa'
     },
     {
-      icon: <VerifiedUserIcon sx={{ fontSize: 40 }} />,
+      icon: <VerifiedUserIcon sx={{ fontSize: 40 }} />, // Trusted results feature icon
       title: 'Trusted Results',
       description: 'Verified by experts and trusted by leading news organizations.',
       image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c'
     }
   ];
 
+  // Variants for container animation
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0 }, 
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.2 // Stagger animation for children elements
       }
     }
   };
 
+  // Variants for individual feature items animation
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 20 }, 
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5
+        duration: 0.5 // Duration for each item's animation
       }
     }
   };
@@ -64,6 +67,7 @@ const About = () => {
         initial="hidden"
         animate="visible"
       >
+        {/* Header Section */}
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <motion.div variants={itemVariants}>
             <Typography
@@ -92,6 +96,7 @@ const About = () => {
             </Typography>
           </motion.div>
 
+          {/* Hero Image Section */}
           <Box
             component={motion.div}
             variants={itemVariants}
@@ -128,6 +133,7 @@ const About = () => {
           </Box>
         </Box>
 
+        {/* Features Grid Section */}
         <Grid container spacing={4}>
           {features.map((feature, index) => (
             <Grid item xs={12} md={6} key={feature.title}>
