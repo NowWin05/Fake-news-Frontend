@@ -104,7 +104,7 @@ const SocialMediaTracker = ({ socialData }) => {
           </Typography>
 
           {/* Loop through each platform and display metrics */}
-          {Object.entries(socialData).map(([platform, metrics]) => (
+          {Object.entries(socialData || {}).map(([platform, metrics]) => (
             <PlatformMetrics
               key={platform}
               platform={platform}
