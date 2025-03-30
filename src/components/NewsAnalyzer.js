@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import {
   Box,
   Card,
@@ -92,27 +93,66 @@ const NewsAnalyzer = () => {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-    setError(''); // Clear previous errors
-    setResult(null); // Clear previous results
-    setLoading(true); // Set loading state
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent default form submission
+  //   setError(''); // Clear previous errors
+  //   setResult(null); // Clear previous results
+  //   setLoading(true); // Set loading state
 
+  //   try {
+  //     const data = {
+  //       url: activeTab === 0 ? url : '', // Use URL if active tab is 0
+  //       title: activeTab === 1 ? title : '', // Use title if active tab is 1
+  //       content: activeTab === 2 ? content : '', // Use content if active tab is 2
+  //     };
+
+  //     const response = await analyzeNews(data); // Analyze news using API
+  //     setResult(response); // Update result state with API response
+  //   } catch (err) {
+  //     setError(err.message || 'An error occurred while analyzing the news'); // Set error message if any
+  //   } finally {
+  //     setLoading(false); // Reset loading state
+  //   }
+  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setResult(null); // Reset previous result
+    setLoading(true);
+  
     try {
       const data = {
-        url: activeTab === 0 ? url : '', // Use URL if active tab is 0
-        title: activeTab === 1 ? title : '', // Use title if active tab is 1
-        content: activeTab === 2 ? content : '', // Use content if active tab is 2
+        url: activeTab === 0 ? url : '',
+        title: activeTab === 1 ? title : '',
+        content: activeTab === 2 ? content : '',
       };
-
-      const response = await analyzeNews(data); // Analyze news using API
-      setResult(response); // Update result state with API response
+  
+      const response = await analyzeNews(data);
+      console.log("API Raw Response:", response); // 🔍 Debug API response
+  
+      if (!response) {
+        throw new Error("No response from API");
+      }
+  
+      setResult(response);
     } catch (err) {
-      setError(err.message || 'An error occurred while analyzing the news'); // Set error message if any
+      console.error("API Error:", err);
+      setError(err.message || "An error occurred while analyzing the news");
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
+  
+  // useEffect(() => {
+  //   if (result?.socialMetrics) {
+  //     console.log("Social Media Data:", result.socialMetrics);
+  //   } else {
+  //     console.log("Social Media Data is undefined");
+  //   }
+  // }, [result]);
+  // useEffect(() => {
+  //   console.log("Full API Response:", result);
+  // }, [result]);
 
   return (
     <motion.div
@@ -303,7 +343,10 @@ const NewsAnalyzer = () => {
                     {/* Social Media Tracker */}
                     <Grid item xs={12} md={6}>
                       <motion.div variants={itemVariants}>
-                        <SocialMediaTracker data={result.socialMedia} />
+                      <SocialMediaTracker data={result.socialMetrics} />
+                      {/* {console.log("Passing Social Media Data to Tracker:", result.socialMetrics)} */}
+
+                        
                       </motion.div>
                     </Grid>
                   </Grid>

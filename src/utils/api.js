@@ -22,6 +22,29 @@ const api = axios.create({
  * @param {Object} data - The news data to analyze
  * @returns {Promise<Object>} Analysis results
  */
+// export const analyzeNews = async (data) => {
+//   try {
+//     console.log("Sending data to API:", data); // Debugging
+//     const response = await fetch("http://localhost:5000/api/analyze", { // ✅ Correct endpoint
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(data),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const result = await response.json();
+//     console.log("API Response Received:", result); // ✅ Check API output
+//     return result;
+//   } catch (error) {
+//     console.error("Error in API call:", error);
+//     return null;
+//   }
+// };
+
+
 export const analyzeNews = async (data) => {
   try {
     const response = await api.post('/analyze', data);

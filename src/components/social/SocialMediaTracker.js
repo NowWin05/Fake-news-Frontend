@@ -90,34 +90,65 @@ const PlatformMetrics = ({ platform, metrics }) => {
   );
 };
 
-const SocialMediaTracker = ({ socialData }) => {
+// const SocialMediaTracker = ({ data }) => {
+//   if (!data) {
+//     return <Typography variant="h6">No Social Media Data Available</Typography>;
+//   }
+
+const SocialMediaTracker = ({ data }) => {
+  console.log("🚀 Received Data in SocialMediaTracker:", data);
+
+  if (!data || Object.keys(data).length === 0) {
+    return <Typography variant="h6">No Social Media Data Available</Typography>;
+  }
+
+
+  
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <Card sx={{ mt: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
             Social Media Impact
           </Typography>
 
-          {/* Loop through each platform and display metrics */}
-          {Object.entries(socialData || {}).map(([platform, metrics]) => (
-            <PlatformMetrics
-              key={platform}
-              platform={platform}
-              metrics={metrics}
-            />
-          ))}
+          {/* Ensure socialData.socialMetrics is not undefined before mapping */}
+          {/* {Object.entries(data).map(([platform, metrics]) => (
+  <PlatformMetrics
+    key={platform}
+    platform={platform}
+    metrics={{
+      shares: metrics.shares || 0,
+      engagement: metrics.engagement || 0,
+      sentiment: metrics.sentiment || 0,
+      hashtags: metrics.hashtags || [], // Ensure it's always an array
+    }}
+  />
+))} */}
+{Object.entries(data).map(([platform, metrics]) => {
+  console.log(`📊 Rendering platform: ${platform}`, metrics);
+  return (
+    <PlatformMetrics
+      key={platform}
+      platform={platform}
+      metrics={{
+        shares: metrics.shares || 0,
+        engagement: metrics.engagement || 0,
+        sentiment: metrics.sentiment || 0,
+        hashtags: metrics.hashtags || [], // Ensure it's always an array
+      }}
+    />
+  );
+})}
+
+
 
           <Box sx={{ mt: 3, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary" gutterBottom>
               Share Analysis
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-              {/* Share buttons with tooltips for each social platform */}
               <Tooltip title="Share on Twitter">
                 <IconButton sx={{ color: '#FFD700' }}>
                   <Twitter />
@@ -143,7 +174,9 @@ const SocialMediaTracker = ({ socialData }) => {
         </CardContent>
       </Card>
     </motion.div>
+    
   );
 };
+
 
 export default SocialMediaTracker;
