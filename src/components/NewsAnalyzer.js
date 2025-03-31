@@ -15,6 +15,7 @@ import {
   useTheme,
 } from '@mui/material'; // Import necessary components and hooks from Material-UI
 import { Link as LinkIcon, Title, Description, Search } from '@mui/icons-material'; // Import icons for tabs
+import RandomDisplay from './test';
 import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion for animations
 import WordCloud from './visualizations/WordCloud'; // Import custom visualizations
 import BiasCompass from './visualizations/BiasCompass';
@@ -106,7 +107,8 @@ const NewsAnalyzer = () => {
       };
 
       const response = await analyzeNews(data); // Analyze news using API
-      setResult(response); // Update result state with API response
+      setResult(response);
+      // Update result state with API response
     } catch (err) {
       setError(err.message || 'An error occurred while analyzing the news'); // Set error message if any
     } finally {
@@ -130,16 +132,16 @@ const NewsAnalyzer = () => {
           overflow: 'visible', 
           '&::before': { // Background overlay styling
             content: '""',
-            position: 'absolute',
-            top: -2,
-            left: -2,
-            right: -2,
-            bottom: -2,
-            background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-            borderRadius: '14px',
-            zIndex: -1,
-            opacity: 0.5, // Semi-transparent background
-            filter: 'blur(8px)', // Blur effect
+                  position: 'absolute',
+        top: -2,
+        left: -2,
+        right: -2,
+        bottom: -2,
+        background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+        borderRadius: '14px',
+        zIndex: -1,
+        opacity: 0.5,
+        filter: 'blur(8px)',
           }
         }}
       >
@@ -281,31 +283,62 @@ const NewsAnalyzer = () => {
                   <Grid container spacing={3}>
                     {/* Credibility Analysis */}
                     <Grid item xs={12} md={6}>
-                      <motion.div variants={itemVariants}>
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.4 }}
+                      >
                         <CredibilityBreakdown data={result.credibility} />
                       </motion.div>
                     </Grid>
 
                     {/* Sentiment Analysis */}
                     <Grid item xs={12} md={6}>
-                      <motion.div variants={itemVariants}>
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.4, delay: 0.1 }}
+                      >
                         <SentimentAnalysis data={result.sentiment} />
                       </motion.div>
                     </Grid>
 
                     {/* Bias Compass */}
                     <Grid item xs={12} md={6}>
-                      <motion.div variants={itemVariants}>
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                      >
                         <BiasCompass data={result.bias} />
                       </motion.div>
                     </Grid>
 
                     {/* Social Media Tracker */}
                     <Grid item xs={12} md={6}>
-                      <motion.div variants={itemVariants}>
-                        <SocialMediaTracker data={result.socialMedia} />
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                        <SocialMediaTracker data={result.socialMetrics} />
                       </motion.div>
                     </Grid>
+                  {/* sourcereputaion */}
+                    {/* <Grid item xs={12} md={6}>
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                        <SourceReputation data={result.factScore} />
+                      </motion.div>
+                    </Grid> */}
                   </Grid>
                 </Box>
               </motion.div>
