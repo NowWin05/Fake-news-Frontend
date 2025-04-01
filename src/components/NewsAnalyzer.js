@@ -46,7 +46,7 @@ const containerVariants = {
     },
   },
 };
-
+var temp1=80;
 // Animation variants for individual items
 const itemVariants = {
   hidden: { opacity: 0, x: -20 }, // Start with opacity 0 and shifted to the left
@@ -108,6 +108,7 @@ const NewsAnalyzer = () => {
 
       const response = await analyzeNews(data); // Analyze news using API
       setResult(response);
+      console.log(`this is result`+ {response});
       // Update result state with API response
     } catch (err) {
       setError(err.message || 'An error occurred while analyzing the news'); // Set error message if any
@@ -118,10 +119,10 @@ const NewsAnalyzer = () => {
 
   return (
     <motion.div
-      variants={containerVariants} // Animation for container
-      initial="hidden" // Start with hidden state
-      animate="visible" // Animate to visible state
-      exit="exit" // Exit animation
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible" 
+      exit="exit"
     >
       <Card 
         sx={{ 
@@ -129,23 +130,37 @@ const NewsAnalyzer = () => {
           mx: 'auto', 
           mt: 4, 
           position: 'relative',
-          overflow: 'visible', 
-          '&::before': { // Background overlay styling
+          overflow: 'visible',
+          bgcolor: '#ffffff',
+          boxShadow: '0 8px 32px rgba(0, 119, 182, 0.1)',
+          border: '1px solid rgba(0, 119, 182, 0.05)',
+          borderRadius: 2,
+          '&::before': {
             content: '""',
-                  position: 'absolute',
-        top: -2,
-        left: -2,
-        right: -2,
-        bottom: -2,
-        background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-        borderRadius: '14px',
-        zIndex: -1,
-        opacity: 0.5,
-        filter: 'blur(8px)',
+            position: 'absolute',
+            top: -3,
+            left: -3,
+            right: -3,
+            bottom: -3,
+            background: 'linear-gradient(135deg, #2c7fb8 0%, #7dcfb6 100%)',
+            borderRadius: '16px',
+            zIndex: -1,
+            opacity: 0.4,
+            filter: 'blur(8px)',
           }
         }}
       >
-        <CardContent>
+        {/* Gradient header bar */}
+        <Box 
+          sx={{ 
+            height: 8, 
+            background: 'linear-gradient(90deg, #2c7fb8 0%, #7dcfb6 100%)',
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8
+          }}
+        />
+        
+        <CardContent sx={{ p: 3 }}>
           <motion.div variants={itemVariants}>
             <Typography 
               variant="h4" 
@@ -154,12 +169,9 @@ const NewsAnalyzer = () => {
               sx={{
                 textAlign: 'center',
                 mb: 4,
-                background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                color: '#2c7fb8',
                 fontWeight: 'bold',
-                letterSpacing: '0.2rem',
-                textShadow: '0 0 20px rgba(0, 242, 255, 0.5)',
+                letterSpacing: '0.1rem',
               }}
             >
               News Analyzer
@@ -167,14 +179,14 @@ const NewsAnalyzer = () => {
           </motion.div>
 
           {/* Tabs Section */}
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'rgba(0, 119, 182, 0.1)', mb: 3 }}>
             <Tabs 
               value={activeTab} 
               onChange={handleTabChange} 
               centered 
               sx={{ 
                 '& .MuiTabs-indicator': {
-                  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  background: 'linear-gradient(90deg, #2c7fb8 0%, #7dcfb6 100%)',
                   height: 3,
                   borderRadius: '3px',
                 },
@@ -182,11 +194,11 @@ const NewsAnalyzer = () => {
                   minWidth: 120,
                   transition: 'all 0.3s ease',
                   '&.Mui-selected': {
-                    color: theme.palette.primary.main,
+                    color: '#2c7fb8',
                     fontWeight: 'bold',
                   },
                   '&:hover': {
-                    color: theme.palette.primary.light,
+                    color: '#5aa7de',
                   },
                 },
               }}
@@ -248,6 +260,12 @@ const NewsAnalyzer = () => {
                   mb: 2,
                   height: 48,
                   fontSize: '1.1rem',
+                  background: 'linear-gradient(90deg, #2c7fb8 0%, #5aa7de 100%)',
+                  boxShadow: '0 4px 10px rgba(0, 119, 182, 0.2)',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #2c7fb8 20%, #5aa7de 120%)',
+                    boxShadow: '0 6px 15px rgba(0, 119, 182, 0.3)',
+                  }
                 }}
               >
                 {loading ? 'Analyzing...' : 'Analyze'}
@@ -289,7 +307,15 @@ const NewsAnalyzer = () => {
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.4 }}
                       >
-                        <CredibilityBreakdown data={result.credibility} />
+                        <CredibilityBreakdown
+  factors={[
+    { label: "Source Reliability", value: result.sourceReliability, color: "#FF5733" },
+    { label: "Content Score", value: result.contentScore, color: "#33FF57" },
+    { label: "Fact Score", value: result.factScore, color: "#3357FF" },
+    { label: "Language Score", value: result.languageScore, color: "#FFD700" }
+  ]}
+/>
+
                       </motion.div>
                     </Grid>
 
@@ -301,7 +327,8 @@ const NewsAnalyzer = () => {
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.4, delay: 0.1 }}
                       >
-                        <SentimentAnalysis data={result.sentiment} />
+                        { console.log(`thsi is sentiment ${result.sentiment}`)}
+                        <SentimentAnalysis emotion={result.sentiment.emotion}  value={result.sentiment.value} />
                       </motion.div>
                     </Grid>
 
@@ -312,8 +339,12 @@ const NewsAnalyzer = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.4, delay: 0.2 }}
+
                       >
-                        <BiasCompass data={result.bias} />
+                       
+                       
+                        <BiasCompass bias= {result.bias}/>
+                        {/* {console.log(temp1)} */}
                       </motion.div>
                     </Grid>
 
@@ -329,16 +360,58 @@ const NewsAnalyzer = () => {
                       </motion.div>
                     </Grid>
                   {/* sourcereputaion */}
-                    {/* <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6}>
                       <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.4, delay: 0.3 }}
                       >
-                        <SourceReputation data={result.factScore} />
+                        <SourceReputation 
+  reputation={{
+    sourceName: 'Indian Express',
+    accuracy: result.sourceAccuracy, // Ensure these values are part of your API response
+    factChecking: result.sourceFactChecking,
+    editorialStandards: result.sourceEditorialStandards,
+    transparency: result.sourceTransparency,
+    knownFor: result.sourceKnownFor, // List of known attributes like "Investigative Journalism"
+  }} 
+/>
+
                       </motion.div>
-                    </Grid> */}
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                       <EducationalResources resources={result.educationalResources} />
+
+                      </motion.div>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                        {console.log("Key terms being passed to WordCloud:", result.keyTerms)}
+                        <WordCloud
+                          words={[
+                            { text: 'news', value: 10 },
+                            { text: 'media', value: 7 },
+                            { text: 'fact', value: 5 },
+                            { text: 'accuracy', value: 3 },
+                            { text: 'journalism', value: 8 },
+                            { text: 'reporting', value: 6 }
+                          ]}
+                        />
+                      </motion.div>
+                    </Grid>
                   </Grid>
                 </Box>
               </motion.div>

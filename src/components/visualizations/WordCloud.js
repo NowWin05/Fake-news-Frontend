@@ -1,46 +1,162 @@
 import React from 'react';
-import ReactWordcloud from 'react-wordcloud'; // Import the WordCloud library
-import { Box, Card, CardContent, Typography } from '@mui/material'; // Import Material-UI components
+import { Box, Card, CardContent, Typography, Chip, alpha } from '@mui/material';
 
-// Define the WordCloud component
 const WordCloud = ({ words = [] }) => {
-  // Ensure words are in the correct format for react-wordcloud
-  const formattedWords = Array.isArray(words) ? words.map(word => {
-    if (typeof word === 'string') {
-      return { text: word, value: 1 }; // Map string words to objects with 'text' and 'value'
+  // Ensure words is always a valid array with required properties
+  let formattedWords = [];
+  
+  try {
+    if (Array.isArray(words)) {
+      formattedWords = words.filter(word => 
+        word && 
+        typeof word === 'object' && 
+        word.text && 
+        typeof word.text === 'string' && 
+        typeof word.value === 'number'
+      );
+      
+      // If no valid words after filtering, use fallback data
+      if (formattedWords.length === 0) {
+        formattedWords = [
+          { text: 'news', value: 10 },
+          { text: 'media', value: 7 },
+          { text: 'fact', value: 5 },
+          { text: 'accuracy', value: 3 },
+          { text: 'journalism', value: 8 },
+          { text: 'reporting', value: 6 }
+        ];
+      }
+    } else {
+      formattedWords = [
+        { text: 'news', value: 10 },
+        { text: 'media', value: 7 },
+        { text: 'fact', value: 5 },
+        { text: 'accuracy', value: 3 }
+      ];
     }
-    return word; // Return existing objects if already in the correct format
-  }) : []; // Default to empty array if words is not an array
+  } catch (error) {
+    formattedWords = [
+      { text: 'news', value: 10 },
+      { text: 'media', value: 7 }
+    ];
+  }
 
-  // Options for customizing the WordCloud appearance
-  const options = {
-    colors: ['#FFD700', '#C0A960', '#B29600', '#DFC98C', '#8C7B3A'], // Custom color palette for the words
-    enableTooltip: true, // Enable tooltips for individual words
-    deterministic: false, // Enable deterministic rendering
-    fontFamily: 'Poppins', // Font family for the words
-    fontSizes: [12, 60], // Font size range
-    fontStyle: 'normal', // Font style (e.g., italic, normal)
-    fontWeight: 'normal', // Font weight (e.g., normal, bold)
-    padding: 1, // Padding between words
-    rotations: 3, // Number of rotations for each word
-    rotationAngles: [0, 90], // Angles for rotations (e.g., 0 or 90 degrees)
-    scale: 'sqrt', // Scaling function
-    spiral: 'archimedean', // Spiral shape of the word cloud
-    transitionDuration: 1000, // Duration for transitions/animations
+  // Sort words by value (highest first)
+  formattedWords.sort((a, b) => b.value - a.value);
+
+  // Get the maximum value for scaling
+  const maxValue = formattedWords.length > 0 ? Math.max(...formattedWords.map(word => word.value)) : 10;
+
+  // Calculate font size based on value
+  const getFontSize = (value) => {
+    return Math.max(14, Math.min(32, 14 + (value / maxValue) * 18));
   };
 
+  // Professional color palette with complementary colors
+  const colors = [
+    '#2c7fb8', // Primary blue
+    '#5aa7de', // Medium blue
+    '#7dcfb6', // Teal
+    '#00b4d8', // Light blue
+    '#0077b6'  // Dark blue
+  ];
+
+  // Get color based on index
+  const getColor = (index) => colors[index % colors.length];
+
   return (
-    <Card sx={{ mt: 3 }}> {/* Card to contain the WordCloud component */}
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Key Terms Analysis {/* Title for the WordCloud card */}
+    <Card 
+      elevation={2}
+      sx={{ 
+        mt: 3, 
+        borderRadius: 2,
+        background: '#ffffff',
+        boxShadow: '0 4px 20px 0 rgba(0, 119, 182, 0.08)',
+        border: '1px solid rgba(0, 119, 182, 0.1)',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Gradient header bar */}
+      <Box 
+        sx={{ 
+          height: 6, 
+          background: 'linear-gradient(90deg, #2c7fb8 0%, #7dcfb6 100%)'
+        }}
+      />
+      
+      <CardContent sx={{ p: 3 }}>
+        <Typography 
+          variant="h6" 
+          gutterBottom 
+          sx={{ 
+            fontWeight: 600, 
+            color: '#2c7fb8',
+            pb: 1,
+            mb: 2,
+            borderBottom: '1px solid rgba(0, 119, 182, 0.1)'
+          }}
+        >
+          Key Terms Analysis
         </Typography>
-        <Box sx={{ height: 400 }}> {/* Box to hold the WordCloud visualization */}
+        
+        <Box 
+          sx={{ 
+            height: 300,
+            p: 2,
+            borderRadius: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(145deg, #ffffff 0%, #f8fcff 100%)'
+          }}
+        >
           {formattedWords.length > 0 ? (
-            <ReactWordcloud words={formattedWords} options={options} /> // Render WordCloud if words are available
+            <Box 
+              sx={{ 
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center'
+              }}
+            >
+              {formattedWords.map((word, index) => (
+                <Box
+                  key={`${word.text}-${index}`}
+                  sx={{
+                    display: 'inline-block',
+                    m: 0.75,
+                    opacity: 0,
+                    animation: 'fadeIn 0.5s forwards',
+                    animationDelay: `${index * 0.08}s`,
+                    '@keyframes fadeIn': {
+                      to: { opacity: 1 }
+                    }
+                  }}
+                >
+                  <Chip
+                    label={word.text}
+                    sx={{
+                      fontSize: getFontSize(word.value),
+                      fontWeight: word.value > maxValue * 0.7 ? 600 : 400,
+                      backgroundColor: getColor(index),
+                      color: '#ffffff',
+                      transition: 'all 0.25s ease',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                      '&:hover': {
+                        transform: 'scale(1.08)',
+                        boxShadow: `0 4px 12px ${alpha(getColor(index), 0.25)}`
+                      }
+                    }}
+                  />
+                </Box>
+              ))}
+            </Box>
           ) : (
-            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 10 }}>
-              No key terms available {/* Message displayed when no words are available */}
+            <Typography variant="body1" color="#5d7b9a" sx={{ textAlign: 'center' }}>
+              No key terms available
             </Typography>
           )}
         </Box>

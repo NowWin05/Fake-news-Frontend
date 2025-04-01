@@ -1,46 +1,87 @@
 import React from 'react';
-import { Box, Card, CardContent, Typography, Rating } from '@mui/material';
+import { Box, Card, CardContent, Typography, Rating, useTheme, alpha } from '@mui/material';
 import { Star } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
-const ReputationMetric = ({ label, value, maxValue = 5 }) => (
-  <Box sx={{ mb: 2 }}>
-    <Typography variant="body2" color="text.secondary" gutterBottom>
-      {label}
-    </Typography>
-    <Rating
-      value={value}
-      max={maxValue}
-      readOnly
-      icon={<Star sx={{ color: '#FFD700' }} />}
-      emptyIcon={<Star sx={{ color: 'rgba(255, 215, 0, 0.2)' }} />}
-    />
-  </Box>
-);
+const ReputationMetric = ({ label, value, maxValue = 5 }) => {
+  const theme = useTheme();
+  return (
+    <Box sx={{ mb: 2 }}>
+      <Typography variant="body2" color="text.secondary" gutterBottom>
+        {label}
+      </Typography>
+      <Rating
+        value={value}
+        max={maxValue}
+        readOnly
+        icon={<Star sx={{ color: theme.palette.primary.main }} />}
+        emptyIcon={<Star sx={{ color: alpha(theme.palette.primary.main, 0.2) }} />}
+      />
+    </Box>
+  );
+};
 
 const SourceReputation = ({ reputation }) => {
+  const theme = useTheme();
+  
+  // Calculate overall reputation score
+  const overallScore = Math.round(
+    (reputation.accuracy + 
+     reputation.factChecking + 
+     reputation.editorialStandards + 
+     reputation.transparency) / 4 * 20
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card sx={{ mt: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
+      <Card 
+        elevation={2}
+        sx={{ 
+          mt: 3, 
+          borderRadius: 2,
+          background: '#ffffff',
+          boxShadow: '0 4px 20px 0 rgba(0, 119, 182, 0.08)',
+          border: '1px solid rgba(0, 119, 182, 0.1)',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Gradient header bar */}
+        <Box 
+          sx={{ 
+            height: 6, 
+            background: 'linear-gradient(90deg, #2c7fb8 0%, #7dcfb6 100%)'
+          }}
+        />
+        
+        <CardContent sx={{ p: 3 }}>
+          <Typography 
+            variant="h6" 
+            gutterBottom 
+            sx={{ 
+              fontWeight: 600, 
+              color: '#2c7fb8',
+              pb: 1,
+              mb: 2,
+              borderBottom: '1px solid rgba(0, 119, 182, 0.1)'
+            }}
+          >
             Source Reputation Analysis
           </Typography>
           
           <Box sx={{ 
             p: 3, 
             borderRadius: 2,
-            background: 'linear-gradient(135deg, rgba(28, 28, 28, 0.9) 0%, rgba(44, 44, 44, 0.9) 100%)',
-            border: '1px solid rgba(255, 215, 0, 0.1)',
+            background: alpha(theme.palette.background.paper, 0.8),
+            border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
           }}>
             <Typography variant="h5" gutterBottom sx={{
-              background: 'linear-gradient(45deg, #FFD700 30%, #C0A960 90%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              fontWeight: 600,
+              color: theme.palette.primary.main,
+              mb: 2
             }}>
               {reputation.sourceName}
             </Typography>
@@ -65,21 +106,30 @@ const SourceReputation = ({ reputation }) => {
               value={reputation.transparency}
             />
 
-            <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(255, 215, 0, 0.05)', borderRadius: 2 }}>
+            <Box 
+              sx={{ 
+                mt: 3, 
+                p: 2, 
+                bgcolor: alpha(theme.palette.primary.main, 0.05), 
+                borderRadius: 2,
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
+              }}
+            >
               <Typography variant="body2" color="text.secondary">
                 Overall Reputation Score
               </Typography>
-              <Typography variant="h4" sx={{
-                background: 'linear-gradient(45deg, #FFD700 30%, #C0A960 90%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>
-                {Math.round(
-                  (reputation.accuracy + 
-                   reputation.factChecking + 
-                   reputation.editorialStandards + 
-                   reputation.transparency) / 4 * 20
-                )}%
+              <Typography 
+                variant="h4" 
+                sx={{
+                  fontWeight: 600,
+                  color: overallScore > 70 
+                    ? theme.palette.success.main 
+                    : overallScore > 40 
+                      ? theme.palette.warning.main 
+                      : theme.palette.error.main,
+                }}
+              >
+                {overallScore}%
               </Typography>
             </Box>
 
@@ -94,12 +144,12 @@ const SourceReputation = ({ reputation }) => {
                     sx={{
                       px: 2,
                       py: 0.5,
-                      borderRadius: 2,
-                      bgcolor: 'rgba(255, 215, 0, 0.1)',
-                      border: '1px solid rgba(255, 215, 0, 0.2)',
+                      borderRadius: 10,
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
                     }}
                   >
-                    <Typography variant="body2" color="primary">
+                    <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>
                       {tag}
                     </Typography>
                   </Box>

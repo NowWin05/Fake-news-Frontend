@@ -17,10 +17,10 @@ const Navigation = () => {
     <AppBar 
       position="static" 
       sx={{ 
-        background: 'transparent', // Transparent background
-        backdropFilter: 'blur(10px)', // Blur effect on the background
-        borderBottom: `1px solid ${theme.palette.primary.main}40`, // Semi-transparent bottom border
-        boxShadow: `0 4px 30px ${theme.palette.primary.main}20`, // Slight shadow
+        background: theme.palette.background.default, // White background
+        color: theme.palette.primary.main, // Blue text color
+        borderBottom: `2px solid ${theme.palette.primary.main}`, // Solid blue bottom border
+        boxShadow: `0 4px 10px ${theme.palette.primary.light}`, // Soft blue shadow
       }}
     >
       <Toolbar>
@@ -37,16 +37,17 @@ const Navigation = () => {
                 component={RouterLink} // Using RouterLink for navigation
                 to={item.path}
                 sx={{
-                  color: 'white', // White text color
+                  color: theme.palette.primary.main, // Blue text color
+                  fontWeight: 'bold',
                   position: 'relative', // Position for pseudo-element
                   '&::after': { // Pseudo-element for underline effect
                     content: '""',
                     position: 'absolute',
-                    bottom: 0,
+                    bottom: -3,
                     left: 0,
                     width: '100%',
-                    height: '2px',
-                    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`, // Gradient underline
+                    height: '3px',
+                    background: theme.palette.primary.main, // Blue underline
                     opacity: 0, // Hidden initially
                     transition: 'opacity 0.3s ease', // Smooth transition
                   },
