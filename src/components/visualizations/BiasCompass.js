@@ -40,6 +40,9 @@ const BiasCompass = ({ bias }) => {
       elevation={2}
       sx={{ 
         mt: 3,
+        height: '100%', // Set card height to 100% to match container
+        display: 'flex',
+        flexDirection: 'column',
         borderRadius: 2,
         background: '#ffffff',
         boxShadow: '0 4px 20px 0 rgba(0, 119, 182, 0.08)',
@@ -55,7 +58,7 @@ const BiasCompass = ({ bias }) => {
         }}
       />
       
-      <CardContent sx={{ p: 3 }}>
+      <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Typography 
           variant="h6" 
           gutterBottom 

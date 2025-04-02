@@ -56,7 +56,12 @@ const itemVariants = {
     transition: { duration: 0.3 }, // Duration of animation
   },
 };
-
+const temp2={
+  "positive": 50,
+  "negative": 50,
+  "neutral": 100,
+  "tone": "positive"
+}
 /**
  * NewsAnalyzer Component
  * 
@@ -298,118 +303,153 @@ const NewsAnalyzer = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <Box sx={{ mt: 4 }}>
-                  <Grid container spacing={3}>
-                    {/* Credibility Analysis */}
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      mb: 3, 
+                      textAlign: 'center',
+                      color: theme.palette.primary.main,
+                      fontWeight: 600
+                    }}
+                  >
+                    Analysis Results
+                  </Typography>
+
+                  <Grid 
+                    container 
+                    spacing={3} 
+                    alignItems="stretch"
+                    sx={{
+                      '& .MuiGrid-item': {
+                        display: 'flex',
+                        '& > div': {
+                          width: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }
+                      }
+                    }}
+                  >
+                    {/* First row - larger width cards */}
                     <Grid item xs={12} md={6}>
                       <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.4 }}
+                        className="card-container"
                       >
-                        <CredibilityBreakdown
-  factors={[
-    { label: "Source Reliability", value: result.sourceReliability, color: "#FF5733" },
-    { label: "Content Score", value: result.contentScore, color: "#33FF57" },
-    { label: "Fact Score", value: result.factScore, color: "#3357FF" },
-    { label: "Language Score", value: result.languageScore, color: "#FFD700" }
-  ]}
-/>
-
+                        <Box className="card-wrapper" sx={{ height: '100%' }}>
+                          <CredibilityBreakdown
+                            factors={[
+                              { label: "Source Reliability", value: result.sourceReliability, color: "#FF5733" },
+                              { label: "Content Score", value: result.contentScore, color: "#33FF57" },
+                              { label: "Fact Score", value: result.factScore, color: "#3357FF" },
+                              { label: "Language Score", value: result.languageScore, color: "#FFD700" }
+                            ]}
+                          />
+                        </Box>
                       </motion.div>
                     </Grid>
 
-                    {/* Sentiment Analysis */}
                     <Grid item xs={12} md={6}>
                       <motion.div
-                        initial={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.4, delay: 0.1 }}
+                        className="card-container"
                       >
-                        { console.log(`thsi is sentiment ${result.sentiment}`)}
-                        <SentimentAnalysis emotion={result.sentiment.emotion}  value={result.sentiment.value} />
+                        <Box className="card-wrapper" sx={{ height: '100%' }}>
+                          { console.log(`this is sentiment ${result.sentiment}`)}
+                          <SentimentAnalysis sentiment={result.sentiment}  />
+                         
+                        </Box>
                       </motion.div>
                     </Grid>
 
-                    {/* Bias Compass */}
+                    {/* Second row */}
                     <Grid item xs={12} md={6}>
                       <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: 0.2 }}
-
+                        className="card-container"
                       >
-                       
-                       
-                        <BiasCompass bias= {result.bias}/>
-                        {/* {console.log(temp1)} */}
-                      </motion.div>
-                    </Grid>
-
-                    {/* Social Media Tracker */}
-                    <Grid item xs={12} md={6}>
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        transition={{ duration: 0.4, delay: 0.3 }}
-                      >
-                        <SocialMediaTracker data={result.socialMetrics} />
-                      </motion.div>
-                    </Grid>
-                  {/* sourcereputaion */}
-                    <Grid item xs={12} md={6}>
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        transition={{ duration: 0.4, delay: 0.3 }}
-                      >
-                        <SourceReputation 
-  reputation={{
-    sourceName: 'Indian Express',
-    accuracy: result.sourceAccuracy, // Ensure these values are part of your API response
-    factChecking: result.sourceFactChecking,
-    editorialStandards: result.sourceEditorialStandards,
-    transparency: result.sourceTransparency,
-    knownFor: result.sourceKnownFor, // List of known attributes like "Investigative Journalism"
-  }} 
-/>
-
+                        <Box className="card-wrapper" sx={{ height: '100%' }}>
+                          <BiasCompass bias={result.bias} />
+                        </Box>
                       </motion.div>
                     </Grid>
 
                     <Grid item xs={12} md={6}>
                       <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: 0.3 }}
+                        className="card-container"
                       >
-                       <EducationalResources resources={result.educationalResources} />
-
+                        <Box className="card-wrapper" sx={{ height: '100%' }}>
+                          <SocialMediaTracker data={result.socialMetrics} />
+                        </Box>
                       </motion.div>
                     </Grid>
+                  
+                    {/* Third row */}
                     <Grid item xs={12} md={6}>
                       <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        transition={{ duration: 0.4, delay: 0.3 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.4 }}
+                        className="card-container"
                       >
-                        {console.log("Key terms being passed to WordCloud:", result.keyTerms)}
-                        <WordCloud
-                          words={[
-                            { text: 'news', value: 10 },
-                            { text: 'media', value: 7 },
-                            { text: 'fact', value: 5 },
-                            { text: 'accuracy', value: 3 },
-                            { text: 'journalism', value: 8 },
-                            { text: 'reporting', value: 6 }
-                          ]}
-                        />
+                        <Box className="card-wrapper" sx={{ height: '100%' }}>
+                          <SourceReputation 
+                            reputation={{
+                              sourceName: result.source,
+                              accuracy: result.sourceAccuracy,
+                              factChecking: result.sourceFactChecking,
+                              editorialStandards: result.sourceEditorialStandards,
+                              transparency: result.sourceTransparency,
+                              knownFor: result.sourceKnownFor,
+                            }} 
+                          />
+                        </Box>
+                      </motion.div>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.5 }}
+                        className="card-container"
+                      >
+                        <Box className="card-wrapper" sx={{ height: '100%' }}>
+                          <EducationalResources resources={result.educationalResources} />
+                        </Box>
+                      </motion.div>
+                    </Grid>
+                    
+                    {/* Fourth row - full width */}
+                    <Grid item xs={12}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.6 }}
+                        className="card-container"
+                      >
+                        <Box className="card-wrapper" sx={{ height: '100%' }}>
+                          {console.log("Key terms being passed to WordCloud:", result.keyTerms)}
+                          <WordCloud
+                            words={[
+                              { text: 'news', value: 10 },
+                              { text: 'media', value: 7 },
+                              { text: 'fact', value: 5 },
+                              { text: 'accuracy', value: 3 },
+                              { text: 'journalism', value: 8 },
+                              { text: 'reporting', value: 6 }
+                            ]}
+                          />
+                        </Box>
                       </motion.div>
                     </Grid>
                   </Grid>

@@ -72,19 +72,24 @@ const EmotionMeter = ({ emotion, value }) => {
   );
 };
 
-const SentimentAnalysis = ({ sentiments = { positive: 0, negative: 0, neutral: 0 } }) => {
+const SentimentAnalysis = ({ sentiment }) => {
   const theme = useTheme();
   
-  // Ensure sentiments is an object with required properties
-  const validSentiments = {
-    positive: sentiments?.positive || 0,
-    negative: sentiments?.negative || 0,
-    neutral: sentiments?.neutral || 0,
+  // Ensure sentiment is an object with required properties
+  const validSentiment = {
+    positive: sentiment?.positive || 0,
+    negative: sentiment?.negative || 0,
+    neutral: sentiment?.neutral || 0,
+    tone: sentiment?.tone || 'neutral'
   };
 
-  // Find the dominant sentiment safely
-  const dominantSentiment = Object.entries(validSentiments)
-    .reduce((a, b) => (b[1] > a[1] ? b : a), ['neutral', 0])[0];
+  // Use the tone directly from API if available, otherwise calculate
+  const dominantSentiment = validSentiment.tone || 
+    Object.entries({
+      positive: validSentiment.positive,
+      negative: validSentiment.negative,
+      neutral: validSentiment.neutral
+    }).reduce((a, b) => (b[1] > a[1] ? b : a), ['neutral', 0])[0];
 
   // Get color based on dominant sentiment
   const getDominantColor = () => {
@@ -139,8 +144,13 @@ const SentimentAnalysis = ({ sentiments = { positive: 0, negative: 0, neutral: 0
         </Typography>
         
         <Box sx={{ mt: 3, mb: 4 }}>
-          {Object.entries(validSentiments).map(([emotion, value]) => (
-            <EmotionMeter key={emotion} emotion={emotion} value={value} />
+          {/* Only render emotions that are part of the sentiment metrics (positive, negative, neutral) */}
+          {['positive', 'negative', 'neutral'].map((emotion) => (
+            <EmotionMeter 
+              key={emotion} 
+              emotion={emotion} 
+              value={validSentiment[emotion]} 
+            />
           ))}
         </Box>
         
