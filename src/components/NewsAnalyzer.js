@@ -359,7 +359,7 @@ const NewsAnalyzer = () => {
                         className="card-container"
                       >
                         <Box className="card-wrapper" sx={{ height: '100%' }}>
-                          { console.log(`this is sentiment ${result.sentiment}`)}
+                          
                           <SentimentAnalysis sentiment={result.sentiment}  />
                          
                         </Box>
@@ -438,7 +438,7 @@ const NewsAnalyzer = () => {
                         className="card-container"
                       >
                         <Box className="card-wrapper" sx={{ height: '100%' }}>
-                          {console.log("Key terms being passed to WordCloud:", result.keyTerms)}
+                          
                           <WordCloud
                             words={[
                               { text: 'news', value: 10 },
