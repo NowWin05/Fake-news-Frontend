@@ -276,7 +276,7 @@ const SocialMediaTracker = (props) => {
     );
   }
 
-  console.log("Social media data received:", socialMetrics);
+  
   
   // Get platforms excluding the 'overall' metrics
   const platforms = Object.keys(socialMetrics).filter(key => key !== 'overall');

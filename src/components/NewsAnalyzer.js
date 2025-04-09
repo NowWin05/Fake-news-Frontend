@@ -20,6 +20,8 @@ import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 import WordCloud from './visualizations/WordCloud'; // Import custom visualizations
 import BiasCompass from './visualizations/BiasCompass';
 import CredibilityBreakdown from './visualizations/CredibilityBreakdown';
+import FakeNewsDetection from './visualizations/FakeNewsDetection'; // New ML component
+import ReadabilityMetrics from './visualizations/ReadabilityMetrics'; // New readability component
 import SentimentAnalysis from './analysis/SentimentAnalysis';
 import SourceReputation from './analysis/SourceReputation';
 import SocialMediaTracker from './social/SocialMediaTracker';
@@ -66,12 +68,7 @@ const temp2={
  * NewsAnalyzer Component
  * 
  * Main component for analyzing news articles using various methods (URL, title, or content).
- * 
- * Features:
- * - Multiple input methods via tabs
- * - Real-time analysis
- * - Visual feedback during analysis
- * - Comprehensive results display
+ * Enhanced with ML model results display.
  */
 const NewsAnalyzer = () => {
   const theme = useTheme(); // Get current theme using Material-UI's useTheme hook
@@ -121,6 +118,13 @@ const NewsAnalyzer = () => {
       setLoading(false); // Reset loading state
     }
   };
+
+  // Helper to check if result has ML model data
+  const hasMlResults = result && (
+    result.fakeProbability !== undefined || 
+    result.contentType !== undefined || 
+    (result.keyFeatures && result.keyFeatures.length > 0)
+  );
 
   return (
     <motion.div
@@ -330,6 +334,22 @@ const NewsAnalyzer = () => {
                       }
                     }}
                   >
+                    {/* ML-based Fake News Detection */}
+                    {/* {hasMlResults && ( */}
+                      <Grid item xs={12}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4 }}
+                          className="card-container"
+                        >
+                          <Box className="card-wrapper" sx={{ height: '100%' }}>
+                            <FakeNewsDetection result={result} />
+                          </Box>
+                        </motion.div>
+                      </Grid>
+                    {/* )} */}
+
                     {/* First row - larger width cards */}
                     <Grid item xs={12} md={6}>
                       <motion.div
@@ -359,12 +379,26 @@ const NewsAnalyzer = () => {
                         className="card-container"
                       >
                         <Box className="card-wrapper" sx={{ height: '100%' }}>
-                          
                           <SentimentAnalysis sentiment={result.sentiment}  />
-                         
                         </Box>
                       </motion.div>
                     </Grid>
+
+                    {/* Readability Metrics - if available from ML model */}
+                    {/* {result.readabilityMetrics && ( */}
+                      <Grid item xs={12} md={6}>
+                        <motion.div
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.4 }}
+                          className="card-container"
+                        >
+                          <Box className="card-wrapper" sx={{ height: '100%' }}>
+                            <ReadabilityMetrics metrics={result} />
+                          </Box>
+                        </motion.div>
+                      </Grid>
+                    {/* )} */}
 
                     {/* Second row */}
                     <Grid item xs={12} md={6}>
@@ -440,14 +474,7 @@ const NewsAnalyzer = () => {
                         <Box className="card-wrapper" sx={{ height: '100%' }}>
                           
                           <WordCloud
-                            words={[
-                              { text: 'news', value: 10 },
-                              { text: 'media', value: 7 },
-                              { text: 'fact', value: 5 },
-                              { text: 'accuracy', value: 3 },
-                              { text: 'journalism', value: 8 },
-                              { text: 'reporting', value: 6 }
-                            ]}
+                            words={[{ text: 'news', value: 10 }, { text: 'media', value: 7 }, { text: 'fact', value: 5 }, { text: 'accuracy', value: 3 }, { text: 'journalism', value: 8 }, { text: 'reporting', value: 6 }]}
                           />
                         </Box>
                       </motion.div>
